@@ -1,0 +1,22 @@
+{
+  "name": "sermonClock",
+  "version": "1.0.0",
+  "description": "A simple clock display to help pastors stay on time",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonathanhines/sermonClock"
+  },
+  "author": "Jon Hines",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-less": "^1.4.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-reload": "^0.2.0",
+    "jit-grunt": "^0.10.0"
+  }
+}
