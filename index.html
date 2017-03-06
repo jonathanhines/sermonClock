@@ -5,10 +5,19 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title></title>
-  <meta name="description" content="">
+  <meta name="description" content="Sermon Clock">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Cabin|Oswald" rel="stylesheet">
+  <script>
+    var sermonConfig={
+      apiBase: "/api",
+      timestep: {
+        display: 1,
+        server: 10
+      }
+    };
+  </script>
 </head>
 
 <body>
@@ -16,9 +25,10 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-  <div id="mainDisplay"></div>
+  <div id="mainDisplay"><span class="content"></span></div>
   <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!--script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script-->
+  <!--script src="/bower_components/jquery-textfill/source/jquery.textfill.min.js"></script-->
   <script>
     __reloadServerUrl="ws://localhost:6001";
   </script>
