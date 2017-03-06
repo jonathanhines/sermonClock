@@ -1,0 +1,6 @@
+AuthType Basic
+AuthName "Sermon Timer"
+AuthUserFile /private/sermon/passwords
+AuthGroupFile /private/sermon/groups
+Require group admin
+Order deny,allow
