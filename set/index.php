@@ -37,13 +37,14 @@
       }
     ?><form method="post" target="">
       <div class="form-group">
-        <label for="targetTime">TargetTime</label>
+        <label for="targetTime">Set Time</label>
         <input type="text" class="form-control" id="targetTime" placeholder="11:55am" name="targetTime"<?php
           if($timeTarget) {
             echo " value='$timeTarget'";
           }?>>
       </div>
-      <button type="submit" class="btn btn-success">Submit</button>
+      <button type="submit" class="btn btn-success">Save</button>
+      <a href='/' class="btn btn-primary">Back to timer</a>
     </form>
   </div>
   <script src="/bower_components/jquery/dist/jquery.min.js"></script>

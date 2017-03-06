@@ -44,6 +44,6 @@ function formatDisplayTime(secs) {
   minutes = minutes%60;
   //return pad(hours)+":"+pad(minutes)+":"+pad(secs);
   //return pad(hours)+":"+pad(minutes);
-  return minutes+":"+pad(secs);
-  //return hours+":"+pad(minutes);
+  //return minutes+":"+pad(secs);
+  return hours+":"+pad(minutes);
 }
