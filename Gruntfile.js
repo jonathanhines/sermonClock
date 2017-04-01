@@ -36,7 +36,8 @@ module.exports = function(grunt) {
     watch: {
       styles: {
         files: ['index.html','less/**/*.less','js/**/*.js'], // which files to watch
-        tasks: ['less:development', 'reload'],
+        //tasks: ['less:development', 'reload'],
+        tasks: ['less:development'],
         options: {
           nospawn: true
         }
@@ -44,6 +45,7 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('default', ['less:development', 'reload', 'watch']);
+  //grunt.registerTask('default', ['less:development', 'reload', 'watch']);
+  grunt.registerTask('default', ['less:development', 'watch']);
   grunt.registerTask('prod', ['less:production']);
 };

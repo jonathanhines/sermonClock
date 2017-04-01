@@ -17,17 +17,21 @@
   }
 
   function updateDisplay() {
+    var timeMode = 'regular';
     var timeRemaining = targetTime - currentTime;
     if( timeRemaining < 0 ) {
       timeRemaining = timeRemaining * -1;
-      $("#mainDisplay").addClass('timeExpired');
-    } else {
-      $("#mainDisplay").removeClass('timeExpired');
+      timeMode = 'expired';
+    } else if( timeRemaining < 5 * 60 ) {
+      timeMode = 'endingSoon';
     }
     $("#mainDisplay .content").html(formatDisplayTime(timeRemaining));
+    $("#mainDisplay").attr('data-timemode', timeMode);
+
     /*$("#mainDisplay").textfill({
       maxFontPixels: -1
     });*/
+
     currentTime = currentTime + config.timestep.display;
     timeoutHandle = setTimeout(updateDisplay, config.timestep.display * 1000);
   }
@@ -42,8 +46,17 @@ function formatDisplayTime(secs) {
   secs = secs%60;
   var hours = Math.floor(minutes/60)
   minutes = minutes%60;
-  //return pad(hours)+":"+pad(minutes)+":"+pad(secs);
+
+  if(hours > 0) {
+    $("#mainDisplay").addClass('hasHours');
+    return pad(hours)+":"+pad(minutes)+":"+pad(secs);
+  } else {
+    $("#mainDisplay").removeClass('hasHours');
+    return minutes+":"+pad(secs);
+  }
+
+  //
   //return pad(hours)+":"+pad(minutes);
   //return minutes+":"+pad(secs);
-  return hours+":"+pad(minutes);
+  //return hours+":"+pad(minutes);
 }

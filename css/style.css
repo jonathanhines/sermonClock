@@ -6742,14 +6742,22 @@ body {
   font-family: Montserrat, sans-serif;
 }
 #mainDisplay {
+  background-color: #000000;
+  color: #FFFFFF;
   height: 100%;
   width: 100%;
   padding: 50vh 0 0;
-  text-align: center;
+  text-align: left;
   font-size: 35vw;
   line-height: 0;
 }
-#mainDisplay.timeExpired {
-  color: red;
+#mainDisplay.hasHours {
+  font-size: 23vw;
+}
+#mainDisplay[data-timemode="expired"] {
+  color: #df0a05;
+}
+#mainDisplay[data-timemode="endingSoon"] {
+  color: #d2b73a;
 }
 /*# sourceMappingURL=/css/style.css.map */

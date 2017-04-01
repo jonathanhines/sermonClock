@@ -1,16 +1,27 @@
+
+
 html, body {
   margin: 0;
   height: 100%;
   font-family: Montserrat, sans-serif;
+
 }
 #mainDisplay {
+  background-color: @color-timer-bg;
+  color: @color-standard-text;
   height: 100%;
   width: 100%;
   padding: 50vh 0 0;
-  text-align: center;
+  text-align: left;
   font-size: 35vw;
+  &.hasHours {
+    font-size: 23vw;
+  }
   line-height: 0;
-  &.timeExpired {
-    color: red;
+  &[data-timemode="expired"] {
+    color: @color-expired-text;
+  }
+  &[data-timemode="endingSoon"] {
+    color: @color-ending-soon-text;
   }
 }
