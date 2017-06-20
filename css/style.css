@@ -6738,6 +6738,9 @@ body {
   font-weight: bold;
   line-height: 0;
 }
+#mainDisplay .content.blank {
+  display: none;
+}
 #mainDisplay.hasHours {
   font-size: 20vw;
 }
@@ -6759,7 +6762,8 @@ body {
 .admin {
   font-family: 'Cabin', sans-serif;
 }
-.admin .return-button {
-  margin-top: 1em;
+.admin #mainDisplay .content.blank {
+  display: block;
+  opacity: 0.4;
 }
 /*# sourceMappingURL=/css/style.css.map */

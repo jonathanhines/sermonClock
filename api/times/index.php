@@ -10,9 +10,18 @@ if(file_exists($timeFilepath)) {
 // File should be a single line with a time of the format: '10:15am'
 $target = strtotime('today ' . strtolower($timeTarget));
 
-$times = array(
+$blankFilepath = '../../data/blank.txt';
+if(file_exists($blankFilepath)) {
+  $blankFlag = file_get_contents($blankFilepath);
+} else {
+  $blankFlag = "false";
+  file_put_contents($blankFilepath, $blankFlag);
+}
+
+$result = array(
   'current' => time(),
-  'target' => $target
+  'target' => $target,
+  'isBlank' => ($blankFlag === "true")
 );
 
-echo json_encode($times);
+echo json_encode($result);

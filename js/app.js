@@ -1,5 +1,5 @@
 (function($,config){
-  var currentTime, targetTime, timeoutHandle;
+  var currentTime, targetTime, timeoutHandle, isBlank;
   function getTimes() {
     $.ajax({
       url: config.apiBase + '/times',
@@ -7,6 +7,7 @@
       success: function(data, status) {
         currentTime = data.current;
         targetTime = data.target;
+        isBlank = data.isBlank;
 
         // Restart displat update
         clearTimeout(timeoutHandle);
@@ -24,6 +25,12 @@
       timeMode = 'expired';
     } else if( timeRemaining < 5 * 60 ) {
       timeMode = 'endingSoon';
+    }
+
+    if(!isBlank) {
+      $("#mainDisplay .content").removeClass("blank");
+    } else {
+      $("#mainDisplay .content").addClass("blank");
     }
     $("#mainDisplay .content").html(formatDisplayTime(timeRemaining));
     $("#mainDisplay").attr('data-timemode', timeMode);

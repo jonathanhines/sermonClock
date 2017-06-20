@@ -14,6 +14,19 @@
   } elseif(file_exists($timeFilepath)) {
     $timeTarget = file_get_contents($timeFilepath);
   }
+
+  $blankFilepath = '../data/blank.txt';
+  if(isset($_POST['isBlank'])) {
+    $isBlank = $_POST['isBlank'];
+    file_put_contents($blankFilepath, $isBlank);
+    if($isBlank === "true") {
+      $successMessage = "Timer was instructed to <strong>Go Dark</strong>";
+    } else {
+      $successMessage = "Timer was instructed to <strong>Go Live</strong>";
+    }
+  } elseif(file_exists($blankFilepath)) {
+    $isBlank = file_get_contents($blankFilepath);
+  }
  ?><!doctype html>
 <html class="no-js" lang="">
 
@@ -87,10 +100,15 @@
         </div>
       </div>
     </div>
-
-    <a href='/' class="btn btn-primary return-button">Back to timer</a>
+    <hr>
+    <form method="post" target="">
+      <input type="hidden" name="isBlank" value="<?php echo $isBlank === "true" ? "false" : "true"; ?>">
+      <button type="submit" class="btn btn-<?php echo $isBlank === "true" ? "info" : "danger";?>"><?php echo $isBlank === "true" ? "Go Live" : "Go Dark"; ?></button>
+      <a href='/' class="btn btn-primary return-button">Back to timer</a>
+    </form>
 
     <div id="mainDisplay" class="admin-preview"><span class="content"></span></div>
+
   </div>
   <script src="/bower_components/jquery/dist/jquery.min.js"></script>
   <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
