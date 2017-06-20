@@ -25,6 +25,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Cabin|Oswald" rel="stylesheet">
+  <link href="/bower_components/droid-sans-mono/droidSansMono.css" rel="stylesheet">
 </head>
 
 <body class="admin">

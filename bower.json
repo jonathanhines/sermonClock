@@ -20,6 +20,6 @@
     "moment": "^2.17.1",
     "bootstrap": "^3.3.7",
     "jquery-textfill": "^0.6.0",
-    "montserrat-webfont": "^1.0.3"
+    "droid-sans-mono": "https://google-fonts.azurewebsites.net/googleFonts/droid-sans-mono?family=Droid+Sans+Mono"
   }
 }
