@@ -20,12 +20,21 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title></title>
+  <title>Control the Timer</title>
   <meta name="description" content="Sermon Clock">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css?family=Cabin|Oswald" rel="stylesheet">
   <link href="/bower_components/droid-sans-mono/droidSansMono.css" rel="stylesheet">
+  <script>
+    var sermonConfig={
+      apiBase: "/api",
+      timestep: {
+        display: 1,
+        server: 10
+      }
+    };
+  </script>
 </head>
 
 <body class="admin">
@@ -43,7 +52,7 @@
     ?>
 
 
-    <div>
+    <div style="max-width:300px;">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" id="formModeTabs" role="tablist">
         <li role="presentation" class="active"><a href="#offset" aria-controls="offset" role="tab" data-toggle="tab">Offset</a></li>
@@ -56,7 +65,10 @@
           <form method="post" target="">
             <div class="form-group">
               <label for="timeAddition">Time addition</label>
-              <input type="number" class="form-control" id="timeAddition" name="timeOffset" placeholder="Email" value="35"> minutes
+              <div class="input-group">
+                <input type="number" class="form-control" id="timeAddition" name="timeOffset" placeholder="Email" value="35">
+                <span class="input-group-addon">minutes</span>
+              </div>
             </div>
             <button type="submit" class="btn btn-success">Save</button>
           </form>
@@ -76,7 +88,9 @@
       </div>
     </div>
 
-    <a href='/' class="btn btn-primary">Back to timer</a>
+    <a href='/' class="btn btn-primary return-button">Back to timer</a>
+
+    <div id="mainDisplay" class="admin-preview"><span class="content"></span></div>
   </div>
   <script src="/bower_components/jquery/dist/jquery.min.js"></script>
   <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -86,6 +100,7 @@
   </script>
   <script type="text/javascript" src="//localhost:6001/__reload/client.js"></script-->
   <script type="text/javascript" src="/js/set.js"></script>
+  <script type="text/javascript" src="/js/app.js"></script>
 </body>
 
 </html>

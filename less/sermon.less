@@ -3,10 +3,9 @@
 html, body {
   margin: 0;
   height: 100%;
-  font-family: 'Droid Sans Mono', monospace;
-
 }
 #mainDisplay {
+  font-family: 'Droid Sans Mono', monospace;
   background-color: @color-timer-bg;
   color: @color-standard-text;
   height: 100%;
@@ -24,5 +23,22 @@ html, body {
   }
   &[data-timemode="endingSoon"] {
     color: @color-ending-soon-text;
+  }
+
+  &.admin-preview {
+    @preview-height: 26vw;
+    margin-top: 40px;
+    height: @preview-height;
+    padding: (@preview-height/2) 0 0;
+    font-size: 20vw;
+    &.hasHours {
+      font-size: 14vw;
+    }
+  }
+}
+.admin {
+  font-family: 'Cabin', sans-serif;
+  .return-button {
+    margin-top: 1em;
   }
 }

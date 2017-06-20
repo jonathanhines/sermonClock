@@ -6725,9 +6725,9 @@ html,
 body {
   margin: 0;
   height: 100%;
-  font-family: 'Droid Sans Mono', monospace;
 }
 #mainDisplay {
+  font-family: 'Droid Sans Mono', monospace;
   background-color: #000000;
   color: #FFFFFF;
   height: 100%;
@@ -6746,5 +6746,20 @@ body {
 }
 #mainDisplay[data-timemode="endingSoon"] {
   color: #d2b73a;
+}
+#mainDisplay.admin-preview {
+  margin-top: 40px;
+  height: 26vw;
+  padding: 13vw 0 0;
+  font-size: 20vw;
+}
+#mainDisplay.admin-preview.hasHours {
+  font-size: 14vw;
+}
+.admin {
+  font-family: 'Cabin', sans-serif;
+}
+.admin .return-button {
+  margin-top: 1em;
 }
 /*# sourceMappingURL=/css/style.css.map */
