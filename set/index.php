@@ -36,7 +36,7 @@
   <title>Control the Timer</title>
   <meta name="description" content="Sermon Clock">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css?v=2">
   <link href="https://fonts.googleapis.com/css?family=Cabin|Oswald" rel="stylesheet">
   <link href="/bower_components/droid-sans-mono/droidSansMono.css" rel="stylesheet">
   <script>
