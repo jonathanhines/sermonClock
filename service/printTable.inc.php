@@ -35,8 +35,8 @@ function printTable($data, $includeForm = false) {
 		echo "</tr>";
 	}
 	echo "</table>";
-	echo "<input class='btn btn-success' type='submit' value='Save'>";
 	if($includeForm) {
+		echo "<input class='btn btn-success' type='submit' value='Save'>";
 		echo "</form>";
 	}
 }

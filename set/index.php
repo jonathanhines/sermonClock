@@ -1,5 +1,7 @@
 <?php
   date_default_timezone_set ("America/Toronto");
+  require_once("../service/serviceStorage.inc.php");
+  require_once("../service/printTable.inc.php");
   $timeFilepath = '../data/time.txt';
   $timeTarget = false;
   $successMessage = false;
@@ -64,17 +66,17 @@
       }
     ?>
 
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="formModeTabs" role="tablist">
+      <li role="presentation" class="active"><a href="#offset" aria-controls="offset" role="tab" data-toggle="tab">Offset</a></li>
+      <li role="presentation"><a href="#time" aria-controls="time" role="tab" data-toggle="tab">Set</a></li>
+      <li role="presentation"><a href="#service" aria-controls="service" role="tab" data-toggle="tab">Automatic</a></li>
+    </ul>
 
-    <div style="max-width:300px;">
-      <!-- Nav tabs -->
-      <ul class="nav nav-tabs" id="formModeTabs" role="tablist">
-        <li role="presentation" class="active"><a href="#offset" aria-controls="offset" role="tab" data-toggle="tab">Offset</a></li>
-        <li role="presentation"><a href="#time" aria-controls="time" role="tab" data-toggle="tab">Set</a></li>
-      </ul>
-
-      <!-- Tab panes -->
-      <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="offset">
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="offset">
+        <div style="max-width:300px;">
           <form method="post" target="">
             <div class="form-group">
               <label for="timeAddition">Time addition</label>
@@ -86,7 +88,9 @@
             <button type="submit" class="btn btn-success">Save</button>
           </form>
         </div>
-        <div role="tabpanel" class="tab-pane" id="time">
+      </div>
+      <div role="tabpanel" class="tab-pane" id="time">
+        <div style="max-width:300px;">
           <form method="post" target="">
             <div class="form-group">
               <label for="targetTime">Set Time</label>
@@ -99,7 +103,16 @@
           </form>
         </div>
       </div>
+      <div role="tabpanel" class="tab-pane" id="service">
+        <div style="padding-top:20px;">
+          <?php
+            $serviceData = getStoredServiceData();
+            printTable($serviceData);
+          ?>
+        </div>
+      </div>
     </div>
+
     <hr>
     <form method="post" target="">
       <input type="hidden" name="isBlank" value="<?php echo $isBlank === "true" ? "false" : "true"; ?>">
