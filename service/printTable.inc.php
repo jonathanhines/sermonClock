@@ -4,7 +4,7 @@ function printTable($data, $includeForm = false) {
 	if($includeForm) {
 		echo "<form method='post' action=''>";
 	}
-	echo "<table class='table'><tr>";
+	echo "<table class='table'><thead><tr>";
 		echo "<th>Name</th>";
 		echo "<th>Type</th>";
 		echo "<th>Length</th>";
@@ -18,11 +18,12 @@ function printTable($data, $includeForm = false) {
 		}
 		echo ">";
 	}
-	echo "</tr>";
+	echo "</tr></thead>";
 
 	// Now print the table cells
 	foreach($data['items'] as $item) {
-		echo "<tr>";
+		$is_active = in_array($item['id'], $data['active_items']);
+		echo "<tr" . ($is_active ? " class='success' ":"") . ">";
 		echo "<td>" . $item['title'] . "</td>";
 		echo "<td>" . $item['type'] . "</td>";
 		echo "<td>" . gmdate("i:s", intval($item['length']) ) . "</td>";
@@ -30,7 +31,7 @@ function printTable($data, $includeForm = false) {
 			echo "<td>" . date("g:i:s a",$start_time) . "</td>";
 		}
 		if($includeForm) {
-			echo "<td>" . "<input class='itemCheckbox'" . (in_array($item['id'], $data['active_items']) ? "checked='checked'" : "") . " type='checkbox' value='". $item['id'] . "' name='activeItems[]'>" . "</td>";
+			echo "<td>" . "<input class='itemCheckbox'" . ($is_active ? "checked='checked'" : "") . " type='checkbox' value='". $item['id'] . "' name='activeItems[]'>" . "</td>";
 		}
 		echo "</tr>";
 	}
