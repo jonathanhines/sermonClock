@@ -1,4 +1,11 @@
-<!doctype html>
+<?php
+/*
+ * Includes
+ */
+require_once("../config.php");
+require_once("./getServiceFromAPI.inc.php");
+require_once("./printTable.inc.php");
+?><!doctype html>
 <html class="no-js" lang="">
 
 <head>
@@ -26,10 +33,9 @@
 		 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
  <![endif]-->
  <div class='container'><?php
-//header('Content-type: application/json');
-include("../config.php");
-include("../tools/curl.php");
-
+ /*
+  * Setup
+  */
 $serviceFilepath = '../data/service.json';
 if( file_exists( $serviceFilepath )) {
   $oldServiceData = json_decode(file_get_contents($serviceFilepath),true);
@@ -44,139 +50,59 @@ if(isset($_GET['move'])) {
 	$move = intval($_GET['move']);
 }
 
-$request = new sermonCurl('');
-$request->setName(PCO_APPLICATION_ID);
-$request->setPass(PCO_APPLICATION_SECRET);
-$request->useAuth(true);
-
-$target_plan_url = 'https://api.planningcenteronline.com/services/v2/service_types/' . SERVICE_TYPE_ID . '/plans?per_page=1';
-if($move >= 0) {
-	$target_plan_url .= "&filter=future";
-} else {
-	$target_plan_url .= "&filter=past&order=-sort_date";
-}
-
-if($move != 0) {
-	$target_plan_url .= "&offset=" . abs($move);
-}
-
-$result_plans = json_decode($request->execute($target_plan_url));
-$this_plan = $result_plans->data[0];
-$plan_id = $this_plan->id;
-
-$result_plan = json_decode($request->execute('https://api.planningcenteronline.com/services/v2/service_types/' . SERVICE_TYPE_ID . '/plans/' . $plan_id));
-$result_items = json_decode($request->execute('https://api.planningcenteronline.com/services/v2/service_types/' . SERVICE_TYPE_ID . '/plans/' . $plan_id . '/items'));
-$result_times = json_decode($request->execute('https://api.planningcenteronline.com/services/v2/service_types/' . SERVICE_TYPE_ID . '/plans/' . $plan_id . '/plan_times'));
-
-$plan = $result_plan->data->attributes;
-$items = $result_items->data;
-$times = $result_times->data;
-
-$display_times = array();
-
-if(isset($_POST['activeItems'])) {
-  $activeItems = $_POST['activeItems'];
+// An active item will be counted down to.  An array of item id's are returned from pco
+$activeItems = [];
+if(isset($_POST['activeItems']) && is_array($_POST['activeItems'])) {
+  foreach($_POST['activeItems'] as $item_id) {
+    if(is_string($item_id) && preg_match('/^[a-z0-9]+$/i', $item_id)) {
+      $activeItems[] = $item_id;
+    }
+  }
   $doSave = true;
 } else {
-  $activeItems = [];
-  if(isset($oldServiceData['items'])) {
-    foreach($oldServiceData['items'] as $old_item) {
-      $activeItems[] = $old_item['id'];
-    }
+  if(isset($oldServiceData['active_items'])) {
+    $activeItems = $oldServiceData['active_items'];
   }
 }
 
-$storageServiceTimes = [];
-foreach($times as $time) {
-	if($time->attributes->time_type == "service") {
-		$display_times[] = [
-			"start_time_formatted" => date("g:i a",strtotime($time->attributes->starts_at)),
-			"running_timestamp" => strtotime($time->attributes->starts_at)
-		];
-		$day_formated_string = date("F j, Y",strtotime($time->attributes->starts_at));
-    $storageServiceTimes[] = strtotime($time->attributes->starts_at);
-	}
+// Get the requested plan from the PCO api.
+$serviceData = getServiceFromAPI($move);
+
+// Append the local active items.
+$serviceData['active_items'] = $activeItems;
+
+// If the form was submitted, we can save the api results to a file.
+$successMessage = false;
+if( $doSave ) {
+  if(file_put_contents($serviceFilepath, json_encode($serviceData))) {
+    $successMessage = "Service plan updated.";
+  }
 }
 
-echo "<h1>" . $plan->series_title . "</h1>";
-echo "<h2>" . $plan->title . "</h2>";
-echo "<h3>" . $day_formated_string . "</h3>\n";
+/*
+ * Renter the content.
+ */
+echo "<h1>" . $serviceData['series_title'] . "</h1>";
+echo "<h2>" . $serviceData['plan_title'] . "</h2>";
+echo "<h3>" . date("F j, Y",$serviceData['service_start_times'][0]) . "</h3>";
 echo "<p>";
 	echo "<a href='?move=" . ( $move - 1 ) . "'>&lt; Previous</a>";
 	echo " <a href='?move=" . ( $move + 1 ) . "'>Next &gt;</a>";
 echo "</p>\n";
 echo "<p>" . date("r", time()) . "</p>";
-echo "<form method='post' action=''>";
-echo "<table class='table'><tr>";
-	echo "<th>Name</th>";
-	echo "<th>Type</th>";
-	echo "<th>Length</th>";
-foreach($display_times as $display_time){
-	echo "<th>" . $display_time['start_time_formatted'] . "</th>";
-}
-echo "<th>" . "<input onChange='toggleSelectAll()' id='selectAllItems' type='checkbox'>";
-echo "</tr>";
 
-foreach($items as $item) {
-	if($item->attributes->service_position == "pre") {
-		foreach($display_times as $i => $display_time) {
-			$display_times[$i]['running_timestamp'] -= intval($item->attributes->length);
-		}
-	}
+if($successMessage) {
+  ?><div class="alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Success!</strong> <?php echo $successMessage; ?>
+    </div><?php
 }
 
-$storageItems = [];
-foreach($items as $item) {
-	if($item->attributes->service_position !== "post") {
-		echo "<tr>";
-		echo "<td>" . $item->attributes->title . "</td>";
-		echo "<td>" . $item->attributes->item_type . "</td>";
-		echo "<td>" . gmdate("i:s", intval($item->attributes->length) ) . "</td>";
-    $startTimes = [];
-		foreach($display_times as $i => $display_time) {
-			echo "<td>" . date("g:i:s a",$display_time['running_timestamp']) . "</td>";
-      $startTimes[$i] = $display_time['running_timestamp'];
-			$display_times[$i]['running_timestamp'] += intval($item->attributes->length);
-		}
-    echo "<td>" . "<input class='itemCheckbox'" . (in_array($item->id, $activeItems) ? "checked='checked'" : "") . " type='checkbox' value='". $item->id . "' name='activeItems[]'>" . "</td>";
-		echo "</tr>";
-    if(in_array($item->id, $activeItems)) {
-      $storageItems[] = [
-        "id" => $item->id,
-        "title" => $item->attributes->title,
-        "type" => $item->attributes->item_type,
-        "length" => intval($item->attributes->length),
-        "startTimes" => $startTimes
-      ];
-    }
-	}
-}
-echo "</table>";
-echo "<input class='btn btn-success' type='submit' value='Save'>";
-echo "</form>";
-
-$storageItem = [
-  "plan_id" => $plan_id,
-  "series_title" => $plan->series_title,
-  "plan_title" => $plan->title,
-  "service_start_times" => $storageServiceTimes,
-  "items" => $storageItems
-];
-if( $doSave ) {
-  file_put_contents($serviceFilepath, json_encode($storageItem));
-}
-
-/*echo "_POST:<pre>" . print_r($_POST,true) . "</pre>";
-echo "Storage:<pre>" . print_r($storageItem,true) . "</pre>";
-echo "Storage:<pre>" . print_r($plan,true) . "</pre>";
-
-//echo "Plans:<pre>" . print_r($result_plans,true) . "</pre>";
-echo "Times:<pre>" . print_r($result_times,true) . "</pre>";
-echo "Plan:<pre>" . print_r($result_plan,true) . "</pre>";
-echo "Items:<pre>" . print_r($result_items,true) . "</pre>";*/
+printTable($serviceData, true);
 
 ?></div>
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script>
   function toggleSelectAll() {
     var allSelected = $("#selectAllItems").prop('checked');
