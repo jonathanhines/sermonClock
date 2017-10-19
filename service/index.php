@@ -30,6 +30,15 @@
 include("../config.php");
 include("../tools/curl.php");
 
+$serviceFilepath = '../data/service.json';
+if( file_exists( $serviceFilepath )) {
+  $oldServiceData = json_decode(file_get_contents($serviceFilepath),true);
+} else {
+  $oldServiceData = [];
+}
+
+$doSave = false;
+
 $move = 0;
 if(isset($_GET['move'])) {
 	$move = intval($_GET['move']);
@@ -65,6 +74,19 @@ $times = $result_times->data;
 
 $display_times = array();
 
+if(isset($_POST['activeItems'])) {
+  $activeItems = $_POST['activeItems'];
+  $doSave = true;
+} else {
+  $activeItems = [];
+  if(isset($oldServiceData['items'])) {
+    foreach($oldServiceData['items'] as $old_item) {
+      $activeItems[] = $old_item['id'];
+    }
+  }
+}
+
+$storageServiceTimes = [];
 foreach($times as $time) {
 	if($time->attributes->time_type == "service") {
 		$display_times[] = [
@@ -72,6 +94,7 @@ foreach($times as $time) {
 			"running_timestamp" => strtotime($time->attributes->starts_at)
 		];
 		$day_formated_string = date("F j, Y",strtotime($time->attributes->starts_at));
+    $storageServiceTimes[] = strtotime($time->attributes->starts_at);
 	}
 }
 
@@ -82,7 +105,8 @@ echo "<p>";
 	echo "<a href='?move=" . ( $move - 1 ) . "'>&lt; Previous</a>";
 	echo " <a href='?move=" . ( $move + 1 ) . "'>Next &gt;</a>";
 echo "</p>\n";
-echo "<p>" . date("r", time()) . "</p>";  
+echo "<p>" . date("r", time()) . "</p>";
+echo "<form method='post' action=''>";
 echo "<table class='table'><tr>";
 	echo "<th>Name</th>";
 	echo "<th>Type</th>";
@@ -90,6 +114,7 @@ echo "<table class='table'><tr>";
 foreach($display_times as $display_time){
 	echo "<th>" . $display_time['start_time_formatted'] . "</th>";
 }
+echo "<th>" . "<input onChange='toggleSelectAll()' id='selectAllItems' type='checkbox'>";
 echo "</tr>";
 
 foreach($items as $item) {
@@ -100,24 +125,64 @@ foreach($items as $item) {
 	}
 }
 
+$storageItems = [];
 foreach($items as $item) {
 	if($item->attributes->service_position !== "post") {
 		echo "<tr>";
 		echo "<td>" . $item->attributes->title . "</td>";
 		echo "<td>" . $item->attributes->item_type . "</td>";
 		echo "<td>" . gmdate("i:s", intval($item->attributes->length) ) . "</td>";
+    $startTimes = [];
 		foreach($display_times as $i => $display_time) {
 			echo "<td>" . date("g:i:s a",$display_time['running_timestamp']) . "</td>";
+      $startTimes[$i] = $display_time['running_timestamp'];
 			$display_times[$i]['running_timestamp'] += intval($item->attributes->length);
 		}
+    echo "<td>" . "<input class='itemCheckbox'" . (in_array($item->id, $activeItems) ? "checked='checked'" : "") . " type='checkbox' value='". $item->id . "' name='activeItems[]'>" . "</td>";
 		echo "</tr>";
+    if(in_array($item->id, $activeItems)) {
+      $storageItems[] = [
+        "id" => $item->id,
+        "title" => $item->attributes->title,
+        "type" => $item->attributes->item_type,
+        "length" => intval($item->attributes->length),
+        "startTimes" => $startTimes
+      ];
+    }
 	}
 }
 echo "</table>";
+echo "<input class='btn btn-success' type='submit' value='Save'>";
+echo "</form>";
 
-echo "<pre>" . print_r($result_plans,true) . "</pre>";
-echo "<pre>" . print_r($result_times,true) . "</pre>";
-echo "<pre>" . print_r($result_plan,true) . "</pre>";
-echo "<pre>" . print_r($result_items,true) . "</pre>";
+$storageItem = [
+  "plan_id" => $plan_id,
+  "series_title" => $plan->series_title,
+  "plan_title" => $plan->title,
+  "service_start_times" => $storageServiceTimes,
+  "items" => $storageItems
+];
+if( $doSave ) {
+  file_put_contents($serviceFilepath, json_encode($storageItem));
+}
 
-?></div></body></html>
+/*echo "_POST:<pre>" . print_r($_POST,true) . "</pre>";
+echo "Storage:<pre>" . print_r($storageItem,true) . "</pre>";
+echo "Storage:<pre>" . print_r($plan,true) . "</pre>";
+
+//echo "Plans:<pre>" . print_r($result_plans,true) . "</pre>";
+echo "Times:<pre>" . print_r($result_times,true) . "</pre>";
+echo "Plan:<pre>" . print_r($result_plan,true) . "</pre>";
+echo "Items:<pre>" . print_r($result_items,true) . "</pre>";*/
+
+?></div>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+  function toggleSelectAll() {
+    var allSelected = $("#selectAllItems").prop('checked');
+    $('.itemCheckbox').each(function() {
+      $( this ).prop('checked', allSelected);
+    });
+  }
+</script>
+</body></html>
