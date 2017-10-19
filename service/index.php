@@ -3,6 +3,7 @@
  * Includes
  */
 require_once("../config.php");
+require_once("./serviceStorage.inc.php");
 require_once("./getServiceFromAPI.inc.php");
 require_once("./printTable.inc.php");
 ?><!doctype html>
@@ -36,12 +37,7 @@ require_once("./printTable.inc.php");
  /*
   * Setup
   */
-$serviceFilepath = '../data/service.json';
-if( file_exists( $serviceFilepath )) {
-  $oldServiceData = json_decode(file_get_contents($serviceFilepath),true);
-} else {
-  $oldServiceData = [];
-}
+$oldServiceData = getStoredServiceData();
 
 $doSave = false;
 
@@ -74,13 +70,11 @@ $serviceData['active_items'] = $activeItems;
 // If the form was submitted, we can save the api results to a file.
 $successMessage = false;
 if( $doSave ) {
-  if(file_put_contents($serviceFilepath, json_encode($serviceData))) {
-    $successMessage = "Service plan updated.";
-  }
+  $successMessage = putStoredServiceData($serviceData);
 }
 
 /*
- * Renter the content.
+ * Render the content.
  */
 echo "<h1>" . $serviceData['series_title'] . "</h1>";
 echo "<h2>" . $serviceData['plan_title'] . "</h2>";
@@ -89,7 +83,6 @@ echo "<p>";
 	echo "<a href='?move=" . ( $move - 1 ) . "'>&lt; Previous</a>";
 	echo " <a href='?move=" . ( $move + 1 ) . "'>Next &gt;</a>";
 echo "</p>\n";
-echo "<p>" . date("r", time()) . "</p>";
 
 if($successMessage) {
   ?><div class="alert alert-success alert-dismissible" role="alert">
