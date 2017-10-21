@@ -31,12 +31,21 @@ html, body {
 
   &.admin-preview {
     @preview-height: 26vw;
+    @large-preview-height: 330px;
     margin-top: 40px;
     height: @preview-height;
     padding: (@preview-height/2) 0 0;
     font-size: 20vw;
     &.hasHours {
       font-size: 14vw;
+    }
+    @media (min-width: 1200px) {
+      height: @large-preview-height;
+      font-size: 320px;
+      padding: (@large-preview-height/2.2) 0 0;
+      &.hasHours {
+        font-size: 210px;
+      }
     }
   }
 }

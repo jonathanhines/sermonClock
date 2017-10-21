@@ -6760,6 +6760,16 @@ body {
 #mainDisplay.admin-preview.hasHours {
   font-size: 14vw;
 }
+@media (min-width: 1200px) {
+  #mainDisplay.admin-preview {
+    height: 330px;
+    font-size: 320px;
+    padding: 150px 0 0;
+  }
+  #mainDisplay.admin-preview.hasHours {
+    font-size: 210px;
+  }
+}
 .admin {
   cursor: auto;
   font-family: 'Cabin', sans-serif;
