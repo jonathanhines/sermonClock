@@ -107,7 +107,9 @@
         <div style="padding-top:20px;">
           <?php
             $serviceData = getStoredServiceData();
-            printTable($serviceData);
+            if($serviceData) {
+              printTable($serviceData);
+            }
           ?>
         </div>
       </div>
