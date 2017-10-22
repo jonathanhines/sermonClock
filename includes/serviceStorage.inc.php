@@ -1,6 +1,6 @@
 <?php
 
-define("SERVICE_FILE_STORAGE_PATH", '../data/service.json');
+define("SERVICE_FILE_STORAGE_PATH", dirname(__FILE__) . '/../data/service.json');
 function getStoredServiceData() {
 	if( file_exists( SERVICE_FILE_STORAGE_PATH )) {
 	  return json_decode(file_get_contents(SERVICE_FILE_STORAGE_PATH),true);
@@ -11,9 +11,9 @@ function getStoredServiceData() {
 
 function putStoredServiceData($data) {
 	if(file_put_contents(SERVICE_FILE_STORAGE_PATH, json_encode($data))) {
-    return "Service plan updated.";
+    return true;
   } else {
-		return "Error storing service plan.";
+		return false;
 	}
 }
 

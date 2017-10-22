@@ -3,9 +3,9 @@
  * Includes
  */
 require_once("../config.php");
-require_once("./serviceStorage.inc.php");
-require_once("./getServiceFromAPI.inc.php");
-require_once("./printTable.inc.php");
+require_once("../includes/serviceStorage.inc.php");
+require_once("../includes/getServiceFromAPI.inc.php");
+require_once("../includes/printTable.inc.php");
 ?><!doctype html>
 <html class="no-js" lang="">
 
@@ -70,7 +70,11 @@ $serviceData['active_items'] = $activeItems;
 // If the form was submitted, we can save the api results to a file.
 $successMessage = false;
 if( $doSave ) {
-  $successMessage = putStoredServiceData($serviceData);
+  if(putStoredServiceData($serviceData)) {
+    $successMessage = "Successfully stored service plan";
+  } else {
+    $errorMessage = "Error saving service plan.";
+  }
 }
 
 /*
@@ -90,9 +94,15 @@ if($successMessage) {
     <strong>Success!</strong> <?php echo $successMessage; ?>
     </div><?php
 }
+if($errorMessage) {
+  ?><div class="alert alert-error alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Error: </strong> <?php echo $errorMessage; ?>
+    </div><?php
+}
 
 printTable($serviceData, true);
-
+echo "<pre>" . print_r($serviceData,true) . "</pre>";
 ?></div>
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

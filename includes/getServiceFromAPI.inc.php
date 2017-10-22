@@ -1,5 +1,5 @@
 <?php
-require_once("../tools/curl.php");
+require_once(dirname(__FILE__) . '/../tools/curl.php');
 function getServiceFromAPI($move) {
 	$request = new sermonCurl('');
 	$request->setName(PCO_APPLICATION_ID);
