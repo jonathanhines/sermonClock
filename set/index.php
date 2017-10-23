@@ -157,7 +157,7 @@
           <?php
             $serviceData = getStoredServiceData();
             if($serviceData) {
-              printTable($serviceData);
+              printTable($serviceData, "live");
             }
           ?>
         </div>
