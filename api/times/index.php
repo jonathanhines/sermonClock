@@ -29,14 +29,26 @@ switch($_SERVER['REQUEST_METHOD']) {
 
         $targetTime = 0;
         $nextTime = 0;
+        $currentItemID = "";
+        $currentItemTitle = "";
+        $targetItemID = "";
+        $targetItemTitle = "";
 
         // Walk through the service items to find the upcoming and next targets
         for($serviceIndex = 0; $serviceIndex < $serviceCount; ++$serviceIndex) {
           foreach($service['items'] as $item) {
+            // We want the last item with a start time lower than current position
+            if($item['startTimes'][$serviceIndex] < $currentPosition) {
+              $currentItemID = $item['id'];
+              $currentItemTitle = $item['title'];
+            }
+
             if($item['startTimes'][$serviceIndex] > $currentPosition && in_array($item['id'], $service['active_items'])) {
               // We found a future active item
               if( $targetTime === 0 ) {
                 $targetTime = $item['startTimes'][$serviceIndex];
+                $targetItemID = $item['id'];
+                $targetItemTitle = $item['title'];
                 continue;
               }
 
@@ -56,7 +68,15 @@ switch($_SERVER['REQUEST_METHOD']) {
           'current' => $currentPosition,
           'target' => $targetTime,
           'next' => $nextTime,
-          'isBlank' => $state['isBlank']
+          'isBlank' => $state['isBlank'],
+          'currentItem' => [
+            'id' => $currentItemID,
+            'title' => $currentItemTitle
+          ],
+          'targetItem' => [
+            'id' => $targetItemID,
+            'title' => $targetItemTitle
+          ]
         );
         break;
 
