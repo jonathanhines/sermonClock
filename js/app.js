@@ -29,6 +29,9 @@
         // Restart displat update
         clearTimeout(timeoutHandle);
         updateDisplay();
+        if(typeof(getTimesCompleteCallback) === "function") {
+          getTimesCompleteCallback(data);
+        }
       }
     });
     setTimeout(getTimes, sermonConfig.timestep.server * 1000);

@@ -6805,4 +6805,24 @@ body {
   background-color: transparent;
   padding: 0;
 }
+.table > tbody > tr.currentItem > td {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.table > tbody > tr.currentItem > td.currentItem {
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.table > tbody > tr.success.currentItem > td {
+  background-color: #c1e2b3;
+}
+.table > tbody > tr.success.currentItem > td.currentItem {
+  font-weight: bold;
+  background-color: #a3d48e;
+}
+.table > tbody > tr.targetItem > td {
+  border-top: solid 1px #000000;
+}
+td.targetItem {
+  font-weight: bold;
+}
 /*# sourceMappingURL=/css/style.css.map */

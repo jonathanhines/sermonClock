@@ -23,12 +23,12 @@ function printTable($data, $formMode = "setup") {
 	// Now print the table cells
 	foreach($data['items'] as $item) {
 		$is_active = in_array($item['id'], $data['active_items']);
-		echo "<tr" . ($is_active ? " class='success' ":"") . ">";
+		echo "<tr class='itemRow" . ($is_active ? "  success":"") . "' id='item_" . $item['id'] . "'>";
 		echo "<td>" . $item['title'] . "</td>";
 		echo "<td>" . $item['type'] . "</td>";
 		echo "<td>" . gmdate("i:s", intval($item['length']) ) . "</td>";
 		foreach($item['startTimes'] as $serviceIndex => $start_time) {
-			echo "<td>";
+			echo "<td class='service_" . (intval($serviceIndex) + 1) . "'>";
 			if($formMode === "live") {
 				echo "<button class='btn-cleared' onClick='setActiveItem(\"". $item['id'] ."\"," . $serviceIndex . ")'>";
 			}
