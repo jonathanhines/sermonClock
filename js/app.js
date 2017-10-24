@@ -1,11 +1,11 @@
-(function($,config){
+//(function($,config){
   var currentTime, targetTime, timeoutHandle, isBlank;
   var currentItemTitle = "";
   var targetItemTitle = "";
   var currentServiceNumber = 0;
   function getTimes() {
     $.ajax({
-      url: config.apiBase + '/times',
+      url: sermonConfig.apiBase + '/times',
       dataType: 'json',
       success: function(data, status) {
         currentTime = data.current;
@@ -31,7 +31,7 @@
         updateDisplay();
       }
     });
-    setTimeout(getTimes, config.timestep.server * 1000);
+    setTimeout(getTimes, sermonConfig.timestep.server * 1000);
   }
 
   function updateDisplay() {
@@ -60,12 +60,12 @@
     $("#currentItemTitle").html(currentItemTitle);
     $("#targetItemTitle").html(targetItemTitle);
 
-    currentTime = currentTime + config.timestep.display;
-    timeoutHandle = setTimeout(updateDisplay, config.timestep.display * 1000);
+    currentTime = currentTime + sermonConfig.timestep.display;
+    timeoutHandle = setTimeout(updateDisplay, sermonConfig.timestep.display * 1000);
   }
   getTimes();
 
-})(jQuery,sermonConfig);
+//})(jQuery,sermonConfig);
 function pad(num) {
     return ("0"+num).slice(-2);
 }

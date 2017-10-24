@@ -6800,4 +6800,9 @@ body {
   display: block;
   opacity: 0.4;
 }
+.btn-cleared {
+  border: none 0 transparent;
+  background-color: transparent;
+  padding: 0;
+}
 /*# sourceMappingURL=/css/style.css.map */

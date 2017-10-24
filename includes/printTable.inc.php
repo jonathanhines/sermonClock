@@ -17,10 +17,6 @@ function printTable($data, $formMode = "setup") {
 			echo " checked='checked' ";
 		}
 		echo "></th>";
-	} elseif($formMode === "live") {
-		echo "<th>";
-		echo "Activate";
-		echo "</th>";
 	}
 	echo "</tr></thead>";
 
@@ -31,13 +27,19 @@ function printTable($data, $formMode = "setup") {
 		echo "<td>" . $item['title'] . "</td>";
 		echo "<td>" . $item['type'] . "</td>";
 		echo "<td>" . gmdate("i:s", intval($item['length']) ) . "</td>";
-		foreach($item['startTimes'] as $start_time) {
-			echo "<td>" . date("g:i:s a",$start_time) . "</td>";
+		foreach($item['startTimes'] as $serviceIndex => $start_time) {
+			echo "<td>";
+			if($formMode === "live") {
+				echo "<button class='btn-cleared' onClick='setActiveItem(\"". $item['id'] ."\"," . $serviceIndex . ")'>";
+			}
+			echo date("g:i:s a",$start_time);
+			if($formMode === "live") {
+				echo "</button>";
+			}
+			echo "</td>";
 		}
 		if($formMode === "setup") {
 			echo "<td>" . "<input class='itemCheckbox'" . ($is_active ? "checked='checked'" : "") . " type='checkbox' value='". $item['id'] . "' name='activeItems[]'>" . "</td>";
-		} elseif($formMode === "live") {
-			echo "<td>" . "<button class='btn btn-success' onClick='setActiveItem(\"". $item['id'] ."\")'>Active</button>" . "</td>";
 		}
 		echo "</tr>";
 	}

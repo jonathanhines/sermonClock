@@ -41,7 +41,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         for($serviceIndex = 0; $serviceIndex < $serviceCount; ++$serviceIndex) {
           foreach($service['items'] as $itemIndex => $item) {
             // We want the last item with a start time lower than current position
-            if($item['startTimes'][$serviceIndex] < $currentPosition) {
+            if($item['startTimes'][$serviceIndex] <= $currentPosition) {
               $currentItemID = $item['id'];
               $currentItemTitle = $item['title'];
               $currentServiceNumber = $serviceIndex + 1;
@@ -64,7 +64,7 @@ switch($_SERVER['REQUEST_METHOD']) {
 
             // We got to the end of the service, try going past by the delay time show overflow.
             if($itemIndex === count($service['items']) - 1) {
-              if($item['startTimes'][$serviceIndex] + $item['length'] + $postServiceDelay > $currentPosition && $targetTime === 0) {
+              if($item['startTimes'][$serviceIndex] + $item['length'] + $postServiceDelay >= $currentPosition && $targetTime === 0) {
                 // We are in the last item, but it hasn't ended yet
                 $targetTime = $item['startTimes'][$serviceIndex] + $item['length'];
                 $targetItemID = $item['id'];
@@ -82,11 +82,10 @@ switch($_SERVER['REQUEST_METHOD']) {
         // We got to the end of all services, set the time to the last time.
         if($targetTime === 0) {
           // We are in the last item, but it hasn't ended yet
-          $item = $service['items'][count($service['items'] - 1)];
+          $item = $service['items'][count($service['items']) - 1];
           $targetTime = $item['startTimes'][$serviceCount - 1] + $item['length'];
           $targetItemID = $item['id'];
           $targetItemTitle = "Service End";
-          continue;
         }
 
         $result = array(
@@ -122,6 +121,11 @@ switch($_SERVER['REQUEST_METHOD']) {
 
   case "POST":
     if(isset($_POST['activateItemID'])) {
+      if(isset($_POST['serviceIndex'])) {
+        $serviceIndex = intval($_POST['serviceIndex']);
+      } else {
+        $serviceIndex = 0;
+      }
       $service = getStoredServiceData();
       $activatedItemID = $_POST['activateItemID'];
       if(!preg_match('/^[a-z0-9]+$/i', $activatedItemID)) {
@@ -132,7 +136,7 @@ switch($_SERVER['REQUEST_METHOD']) {
         if($item['id']===$activatedItemID) {
           $state['mode'] = "service";
           $state['data'] = [
-            'offset' => $item['startTimes'][0] - time()
+            'offset' => $item['startTimes'][$serviceIndex] - time()
           ];
           if( !putStoredStateData($state) ) {
             header("500 Internal Server Error", true, 500);

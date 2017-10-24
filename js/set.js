@@ -5,16 +5,17 @@
   });
 })(jQuery);
 
-setActiveItem = function(id) {
+setActiveItem = function(id, serviceIndex) {
   $.ajax({
     url: sermonConfig.apiBase + '/times',
     dataType: 'json',
     method: "POST",
     data: {
-      activateItemID: id
+      activateItemID: id,
+      serviceIndex: serviceIndex
     },
     success: function(data, status) {
-      // TODO: trigger a timer update if possible
+      getTimes();
     }
   });
 }
