@@ -1,5 +1,8 @@
 (function($,config){
   var currentTime, targetTime, timeoutHandle, isBlank;
+  var currentItemTitle = "";
+  var targetItemTitle = "";
+  var currentServiceNumber = 0;
   function getTimes() {
     $.ajax({
       url: config.apiBase + '/times',
@@ -8,6 +11,20 @@
         currentTime = data.current;
         targetTime = data.target;
         isBlank = data.isBlank;
+        if(typeof(data.currentItem) !== 'undefined') {
+          currentItemTitle = data.currentItem.title;
+        } else {
+          currentItemTitle = "";
+        }
+        if(typeof(data.targetItem) !== 'undefined') {
+          targetItemTitle = data.targetItem.title;
+        } else {
+          targetItemTitle = "";
+        }
+        if(typeof(data.currentServiceNumber) !== 'undefined') {
+          currentItemTitle = data.currentServiceNumber + ": " + currentItemTitle;
+          targetItemTitle = data.currentServiceNumber + ": " + targetItemTitle;
+        }
 
         // Restart displat update
         clearTimeout(timeoutHandle);
@@ -32,12 +49,16 @@
     } else {
       $("#mainDisplay .content").addClass("blank");
     }
+
     $("#mainDisplay .content").html(formatDisplayTime(timeRemaining));
     $("#mainDisplay").attr('data-timemode', timeMode);
 
     /*$("#mainDisplay").textfill({
       maxFontPixels: -1
     });*/
+
+    $("#currentItemTitle").html(currentItemTitle);
+    $("#targetItemTitle").html(targetItemTitle);
 
     currentTime = currentTime + config.timestep.display;
     timeoutHandle = setTimeout(updateDisplay, config.timestep.display * 1000);

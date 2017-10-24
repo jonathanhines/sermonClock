@@ -3,6 +3,8 @@ date_default_timezone_set ("America/Toronto");
 require_once("../../includes/stateStorage.inc.php");
 require_once("../../includes/serviceStorage.inc.php");
 
+$postServiceDelay = 10 * 60;
+
 $state = getStoredStateData();
 if(!$state) {
   $state = [
@@ -33,14 +35,16 @@ switch($_SERVER['REQUEST_METHOD']) {
         $currentItemTitle = "";
         $targetItemID = "";
         $targetItemTitle = "";
+        $currentServiceNumber = 0;
 
         // Walk through the service items to find the upcoming and next targets
         for($serviceIndex = 0; $serviceIndex < $serviceCount; ++$serviceIndex) {
-          foreach($service['items'] as $item) {
+          foreach($service['items'] as $itemIndex => $item) {
             // We want the last item with a start time lower than current position
             if($item['startTimes'][$serviceIndex] < $currentPosition) {
               $currentItemID = $item['id'];
               $currentItemTitle = $item['title'];
+              $currentServiceNumber = $serviceIndex + 1;
             }
 
             if($item['startTimes'][$serviceIndex] > $currentPosition && in_array($item['id'], $service['active_items'])) {
@@ -57,11 +61,32 @@ switch($_SERVER['REQUEST_METHOD']) {
                 break;
               }
             }
+
+            // We got to the end of the service, try going past by the delay time show overflow.
+            if($itemIndex === count($service['items']) - 1) {
+              if($item['startTimes'][$serviceIndex] + $item['length'] + $postServiceDelay > $currentPosition && $targetTime === 0) {
+                // We are in the last item, but it hasn't ended yet
+                $targetTime = $item['startTimes'][$serviceIndex] + $item['length'];
+                $targetItemID = $item['id'];
+                $targetItemTitle = "Service End";
+                continue;
+              }
+            }
           }
           if($nextTime !== 0) {
             // Both the target and next times have been found, no need to continue;
             break;
           }
+        }
+
+        // We got to the end of all services, set the time to the last time.
+        if($targetTime === 0) {
+          // We are in the last item, but it hasn't ended yet
+          $item = $service['items'][count($service['items'] - 1)];
+          $targetTime = $item['startTimes'][$serviceCount - 1] + $item['length'];
+          $targetItemID = $item['id'];
+          $targetItemTitle = "Service End";
+          continue;
         }
 
         $result = array(
@@ -76,7 +101,8 @@ switch($_SERVER['REQUEST_METHOD']) {
           'targetItem' => [
             'id' => $targetItemID,
             'title' => $targetItemTitle
-          ]
+          ],
+          'currentServiceNumber' => $currentServiceNumber
         );
         break;
 

@@ -171,7 +171,7 @@
       <a href='/' class="btn btn-primary return-button">Back to timer</a>
     </form>
 
-    <div id="mainDisplay" class="admin-preview"><span class="content"></span></div>
+    <div id="mainDisplay" class="admin-preview"><span class="content"></span><span id="currentItemTitle"></span><span id="targetItemTitle"></div>
 
   </div>
   <script src="/bower_components/jquery/dist/jquery.min.js"></script>

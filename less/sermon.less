@@ -18,6 +18,7 @@ html, body {
   text-align: center;
   font-size: 30vw;
   font-weight: bold;
+  position: relative;
   &.hasHours {
     font-size: 20vw;
   }
@@ -28,11 +29,27 @@ html, body {
   &[data-timemode="endingSoon"] {
     color: @color-ending-soon-text;
   }
+  #targetItemTitle,
+  #currentItemTitle {
+    color: #FFFFFF;
+    position: absolute;
+    left: 0;
+    font-size: 2vw;
+    line-height: 1.2em;
+    padding: 1vw 2vw;
+  }
+  #targetItemTitle {
+    bottom: 0;
+  }
+  #currentItemTitle {
+    top: 0;
+  }
 
   &.admin-preview {
     @preview-height: 26vw;
     @large-preview-height: 330px;
     margin-top: 40px;
+    margin-bottom: 40px;
     height: @preview-height;
     padding: (@preview-height/2) 0 0;
     font-size: 20vw;
@@ -45,6 +62,12 @@ html, body {
       padding: (@large-preview-height/2.2) 0 0;
       &.hasHours {
         font-size: 210px;
+      }
+
+      #targetItemTitle,
+      #currentItemTitle {
+        padding: 5px 10px;
+        font-size: 22px;
       }
     }
   }

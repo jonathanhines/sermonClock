@@ -6737,6 +6737,7 @@ body {
   text-align: center;
   font-size: 30vw;
   font-weight: bold;
+  position: relative;
   line-height: 0;
 }
 #mainDisplay .content.blank {
@@ -6751,8 +6752,24 @@ body {
 #mainDisplay[data-timemode="endingSoon"] {
   color: #d2b73a;
 }
+#mainDisplay #targetItemTitle,
+#mainDisplay #currentItemTitle {
+  color: #FFFFFF;
+  position: absolute;
+  left: 0;
+  font-size: 2vw;
+  line-height: 1.2em;
+  padding: 1vw 2vw;
+}
+#mainDisplay #targetItemTitle {
+  bottom: 0;
+}
+#mainDisplay #currentItemTitle {
+  top: 0;
+}
 #mainDisplay.admin-preview {
   margin-top: 40px;
+  margin-bottom: 40px;
   height: 26vw;
   padding: 13vw 0 0;
   font-size: 20vw;
@@ -6768,6 +6785,11 @@ body {
   }
   #mainDisplay.admin-preview.hasHours {
     font-size: 210px;
+  }
+  #mainDisplay.admin-preview #targetItemTitle,
+  #mainDisplay.admin-preview #currentItemTitle {
+    padding: 5px 10px;
+    font-size: 22px;
   }
 }
 .admin {
