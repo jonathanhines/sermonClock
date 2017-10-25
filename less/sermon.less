@@ -12,8 +12,12 @@ html, body {
   cursor: none;
 }
 #mainDisplay {
-  .content.blank {
-    display: none;
+  &.blank{
+    .content,
+    #targetItemTitle,
+    #currentItemTitle {
+      display: none;
+    }
   }
   font-family: 'Droid Sans Mono', monospace;
   background-color: @color-timer-bg;
@@ -89,9 +93,13 @@ html, body {
   .container {
     padding-bottom: 100px;
   }
-  #mainDisplay .content.blank {
-    display: block;
-    opacity: 0.4;
+  #mainDisplay.blank {
+    #targetItemTitle,
+    #currentItemTitle,
+   .content {
+     display: block;
+     opacity: 0.4;
+   }
   }
   cursor: auto;
   font-family: 'Cabin', sans-serif;

@@ -6740,7 +6740,9 @@ body {
   position: relative;
   line-height: 0;
 }
-#mainDisplay .content.blank {
+#mainDisplay.blank .content,
+#mainDisplay.blank #targetItemTitle,
+#mainDisplay.blank #currentItemTitle {
   display: none;
 }
 #mainDisplay.hasHours {
@@ -6806,7 +6808,9 @@ body {
 .admin .container {
   padding-bottom: 100px;
 }
-.admin #mainDisplay .content.blank {
+.admin #mainDisplay.blank #targetItemTitle,
+.admin #mainDisplay.blank #currentItemTitle,
+.admin #mainDisplay.blank .content {
   display: block;
   opacity: 0.4;
 }

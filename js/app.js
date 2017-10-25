@@ -48,9 +48,9 @@
     }
 
     if(!isBlank) {
-      $("#mainDisplay .content").removeClass("blank");
+      $("#mainDisplay").removeClass("blank");
     } else {
-      $("#mainDisplay .content").addClass("blank");
+      $("#mainDisplay").addClass("blank");
     }
 
     $("#mainDisplay .content").html(formatDisplayTime(timeRemaining));

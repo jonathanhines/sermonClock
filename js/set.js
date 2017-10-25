@@ -35,11 +35,5 @@ getTimesCompleteCallback = function(data){
     if(typeof(data.currentItem) !== 'undefined') {
       $(".service_" + data.currentServiceNumber).addClass('currentService');
     }
-    /*if(typeof(data.currentItem) !== 'undefined') {
-      $("#item_" + data.currentItem.id + " .service_" + data.currentServiceNumber).addClass('currentItem');
-    }
-    if(typeof(data.targetItem) !== 'undefined') {
-      $("#item_" + data.targetItem.id + " .service_" + data.currentServiceNumber).addClass('targetItem');
-    }*/
   }
 }

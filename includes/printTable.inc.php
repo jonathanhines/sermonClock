@@ -45,8 +45,8 @@ function printTable($data, $formMode = "setup") {
 	}
 	echo "</table>";
 	if($formMode === "setup") {
-		echo "<button class='btn btn-success' type='submit'>Save</button>";
-		echo ' <a class="btn btn-primary" href="/set">Back to Controls</a>';
+		echo "<button class='btn btn-success' type='submit'><i class='fa fa-floppy-o' aria-hidden='true'></i> Save</button>";
+		echo ' <a class="btn btn-primary" href="/set"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Controls</a>';
 		echo "</form>";
 	}
 }

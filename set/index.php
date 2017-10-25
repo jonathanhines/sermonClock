@@ -128,7 +128,7 @@
                 <span class="input-group-addon">minutes</span>
               </div>
             </div>
-            <button type="submit" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-success"><i class='fa fa-floppy-o' aria-hidden='true'></i> Save</button>
           </form>
         </div>
       </div>
@@ -142,7 +142,7 @@
                   echo " value='$targetTime'";
                 }?>>
             </div>
-            <button type="submit" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-success"><i class='fa fa-floppy-o' aria-hidden='true'></i> Save</button>
           </form>
         </div>
       </div>
@@ -167,8 +167,8 @@
     <hr>
     <form method="post" target="">
       <input type="hidden" name="isBlank" value="<?php echo $state['isBlank'] ? "false" : "true"; ?>">
-      <button type="submit" class="btn btn-<?php echo $state['isBlank'] ? "info" : "danger";?>"><?php echo $state['isBlank'] ? "Go Live" : "Go Dark"; ?></button>
-      <a href='/' class="btn btn-primary return-button">Back to timer</a>
+      <button type="submit" class="btn btn-<?php echo $state['isBlank'] ? "info" : "danger";?>"><?php echo $state['isBlank'] ? "<i class='fa fa-sun-o' aria-hidden='true'></i>
+ Go Live" : "<i class='fa fa-moon-o' aria-hidden='true'></i> Go Dark"; ?></button>
     </form>
 
     <div id="mainDisplay" class="admin-preview"><span class="content"></span><span id="currentItemTitle"></span><span id="targetItemTitle"></div>
