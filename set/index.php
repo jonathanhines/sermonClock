@@ -111,9 +111,9 @@
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" id="formModeTabs" role="tablist">
-      <li role="presentation" <?php if($state['mode'] === 'offset') { echo ' class="active"';} ?>><a href="#offset" aria-controls="offset" role="tab" data-toggle="tab">Offset<?php if($state['mode'] === 'offset') { echo ' <span class="activeIndicator"><i class="fa fa-asterisk" aria-hidden="true"></i></span>';} ?></a></li>
-      <li role="presentation" <?php if($state['mode'] === 'target') { echo ' class="active"';} ?>><a href="#time" aria-controls="time" role="tab" data-toggle="tab">Set<?php if($state['mode'] === 'target') { echo ' <span class="activeIndicator"><i class="fa fa-asterisk" aria-hidden="true"></i></span>';} ?></a></li>
-      <li role="presentation" <?php if($state['mode'] === 'service') { echo ' class="active"';} ?>><a href="#service" aria-controls="service" role="tab" data-toggle="tab">Automatic<?php if($state['mode'] === 'service') { echo ' <span class="activeIndicator"><i class="fa fa-asterisk" aria-hidden="true"></i></span>';} ?></a></li>
+      <li role="presentation" <?php if($state['mode'] === 'offset') { echo ' class="active"';} ?>><a href="#offset" aria-controls="offset" role="tab" data-toggle="tab"><i class="fa fa-circle<?php if($state['mode'] === 'offset') { echo ' active';} ?>" aria-hidden="true"></i> Offset</a></li>
+      <li role="presentation" <?php if($state['mode'] === 'target') { echo ' class="active"';} ?>><a href="#time" aria-controls="time" role="tab" data-toggle="tab"><i class="fa fa-circle<?php if($state['mode'] === 'target') { echo ' active';} ?>" aria-hidden="true"></i> Set</a></li>
+      <li role="presentation" <?php if($state['mode'] === 'service') { echo ' class="active"';} ?>><a href="#service" aria-controls="service" role="tab" data-toggle="tab"><i class="fa fa-circle<?php if($state['mode'] === 'service') { echo ' active';} ?>" aria-hidden="true"></i> Automatic</a></li>
     </ul>
 
     <!-- Tab panes -->

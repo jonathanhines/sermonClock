@@ -6794,6 +6794,15 @@ body {
     font-size: 22px;
   }
 }
+.btn i {
+  margin-right: 5px;
+}
+.nav-tabs li i {
+  color: #888;
+}
+.nav-tabs li i.active {
+  color: #5cb85c;
+}
 .tab-pane {
   position: relative;
   padding-top: 20px;
@@ -6836,7 +6845,7 @@ body {
   color: #4cae4c;
 }
 .autopilotControls .settings-action {
-  color: #888888;
+  color: #888;
 }
 .autopilotControls .settings-action:hover,
 .autopilotControls .settings-action:focus {

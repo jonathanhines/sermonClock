@@ -5,6 +5,7 @@
 @color-table-current-active-and-row-or-columm: darken(@bootstrap-table-row-success,10%);
 @color-table-current-active-and-row-and-columm: darken(@bootstrap-table-row-success,20%);
 @target-line: solid 1px #000;
+@color-sermon-grey: #888;
 
 html, body {
   margin: 0;
@@ -82,6 +83,18 @@ html, body {
     }
   }
 }
+
+.btn i {
+  margin-right: 5px;
+}
+.nav-tabs {
+  li i {
+    color: @color-sermon-grey;
+    &.active {
+      color: @bootstrap-success-color;
+    }
+  }
+}
 .tab-pane {
   position: relative;
   padding-top: 20px;
@@ -124,10 +137,10 @@ html, body {
     }
   }
   .settings-action {
-    color: #888888;
+    color: @color-sermon-grey;
     &:hover,
     &:focus {
-      color: darken(#888888,5%);
+      color: darken(@color-sermon-grey,5%);
     }
   }
 }
