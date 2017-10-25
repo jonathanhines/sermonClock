@@ -77,6 +77,7 @@
   <link rel="stylesheet" href="/css/style.css?v=2">
   <link href="https://fonts.googleapis.com/css?family=Cabin|Oswald" rel="stylesheet">
   <link href="/bower_components/droid-sans-mono/droidSansMono.css" rel="stylesheet">
+  <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
   <script>
     var sermonConfig={
       apiBase: "/api",
@@ -110,9 +111,9 @@
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" id="formModeTabs" role="tablist">
-      <li role="presentation" <?php if($state['mode'] === 'offset') { echo ' class="active"';} ?>><a href="#offset" aria-controls="offset" role="tab" data-toggle="tab">Offset</a></li>
-      <li role="presentation" <?php if($state['mode'] === 'target') { echo ' class="active"';} ?>><a href="#time" aria-controls="time" role="tab" data-toggle="tab">Set</a></li>
-      <li role="presentation" <?php if($state['mode'] === 'service') { echo ' class="active"';} ?>><a href="#service" aria-controls="service" role="tab" data-toggle="tab">Automatic</a></li>
+      <li role="presentation" <?php if($state['mode'] === 'offset') { echo ' class="active"';} ?>><a href="#offset" aria-controls="offset" role="tab" data-toggle="tab">Offset<?php if($state['mode'] === 'offset') { echo ' <span class="activeIndicator"><i class="fa fa-asterisk" aria-hidden="true"></i></span>';} ?></a></li>
+      <li role="presentation" <?php if($state['mode'] === 'target') { echo ' class="active"';} ?>><a href="#time" aria-controls="time" role="tab" data-toggle="tab">Set<?php if($state['mode'] === 'target') { echo ' <span class="activeIndicator"><i class="fa fa-asterisk" aria-hidden="true"></i></span>';} ?></a></li>
+      <li role="presentation" <?php if($state['mode'] === 'service') { echo ' class="active"';} ?>><a href="#service" aria-controls="service" role="tab" data-toggle="tab">Automatic<?php if($state['mode'] === 'service') { echo ' <span class="activeIndicator"><i class="fa fa-asterisk" aria-hidden="true"></i></span>';} ?></a></li>
     </ul>
 
     <!-- Tab panes -->
@@ -146,21 +147,20 @@
         </div>
       </div>
       <div role="tabpanel" class="tab-pane<?php if($state['mode'] === 'service') { echo ' active';} ?>" id="service">
-        <?php if( $state['mode'] !== 'service') { ?>
+        <div class="autopilotControls">
           <form method="post" target="">
-            <input class="btn btn-success" type='submit' name="activateServiceMode" value="Engage Autopilot">
+            <?php if( $state['mode'] !== 'service') { ?>
+              <button class="btn-cleared launch-action" type='submit' name="activateServiceMode"><i class="fa fa-rocket fa-2x" aria-hidden="true"></i></button>
+            <?php } ?>
+            <a class="settings-action" href="/service"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a>
           </form>
-        <?php } else { ?>
-          <p>Active</p>
-        <?php } ?>
-        <div style="padding-top:20px;">
-          <?php
-            $serviceData = getStoredServiceData();
-            if($serviceData) {
-              printTable($serviceData, "live");
-            }
-          ?>
         </div>
+        <?php
+          $serviceData = getStoredServiceData();
+          if($serviceData) {
+            printTable($serviceData, "live");
+          }
+        ?>
       </div>
     </div>
 

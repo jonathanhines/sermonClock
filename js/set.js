@@ -22,7 +22,7 @@ setActiveItem = function(id, serviceIndex) {
 
 getTimesCompleteCallback = function(data){
   $(".itemRow").removeClass("currentItem targetItem");
-  $(".itemRow td").removeClass("currentItem targetItem");
+  $(".itemRow td").removeClass("currentService");
   if(typeof(data.currentItem) !== 'undefined') {
     $("#item_" + data.currentItem.id).addClass('currentItem');
   }
@@ -33,10 +33,13 @@ getTimesCompleteCallback = function(data){
 
   if(typeof(data.currentServiceNumber) !== 'undefined') {
     if(typeof(data.currentItem) !== 'undefined') {
+      $(".service_" + data.currentServiceNumber).addClass('currentService');
+    }
+    /*if(typeof(data.currentItem) !== 'undefined') {
       $("#item_" + data.currentItem.id + " .service_" + data.currentServiceNumber).addClass('currentItem');
     }
     if(typeof(data.targetItem) !== 'undefined') {
       $("#item_" + data.targetItem.id + " .service_" + data.currentServiceNumber).addClass('targetItem');
-    }
+    }*/
   }
 }

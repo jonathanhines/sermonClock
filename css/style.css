@@ -6792,13 +6792,51 @@ body {
     font-size: 22px;
   }
 }
+.tab-pane {
+  position: relative;
+  padding-top: 20px;
+}
+.activeIndicator {
+  color: #5cb85c;
+}
 .admin {
   cursor: auto;
   font-family: 'Cabin', sans-serif;
 }
+.admin .container {
+  padding-bottom: 100px;
+}
 .admin #mainDisplay .content.blank {
   display: block;
   opacity: 0.4;
+}
+.autopilotControls {
+  position: absolute;
+  right: 5px;
+  top: 1px;
+}
+@media (min-width: 992px) {
+  .autopilotControls {
+    top: 20px;
+  }
+}
+.autopilotControls button,
+.autopilotControls a {
+  margin-left: 5px;
+}
+.autopilotControls .launch-action {
+  color: #5cb85c;
+}
+.autopilotControls .launch-action:hover,
+.autopilotControls .launch-action:focus {
+  color: #4cae4c;
+}
+.autopilotControls .settings-action {
+  color: #888888;
+}
+.autopilotControls .settings-action:hover,
+.autopilotControls .settings-action:focus {
+  color: #7b7b7b;
 }
 .btn-cleared {
   border: none 0 transparent;
@@ -6808,21 +6846,31 @@ body {
 .table > tbody > tr.currentItem > td {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.table > tbody > tr.currentItem > td.currentItem {
+.table > tbody > tr.currentItem > td.currentService {
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.2);
+}
+.table > tbody > tr > td.currentService {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .table > tbody > tr.success.currentItem > td {
   background-color: #c1e2b3;
 }
-.table > tbody > tr.success.currentItem > td.currentItem {
+.table > tbody > tr.success.currentItem > td.currentService {
   font-weight: bold;
   background-color: #a3d48e;
 }
+.table > tbody > tr.success > td.currentService {
+  background-color: #c1e2b3;
+}
 .table > tbody > tr.targetItem > td {
-  border-top: solid 1px #000000;
+  border-top: solid 1px #000;
 }
 td.targetItem {
   font-weight: bold;
+}
+.previousNextControls a {
+  margin-right: 10px;
+  display: inline-block;
 }
 /*# sourceMappingURL=/css/style.css.map */

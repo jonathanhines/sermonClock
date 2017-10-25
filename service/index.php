@@ -18,6 +18,7 @@ require_once("../includes/printTable.inc.php");
  <link rel="stylesheet" href="/css/style.css?v=2">
  <link href="https://fonts.googleapis.com/css?family=Cabin|Oswald" rel="stylesheet">
  <link href="/bower_components/droid-sans-mono/droidSansMono.css" rel="stylesheet">
+ <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
  <script>
 	 var sermonConfig={
 		 apiBase: "/api",
@@ -83,10 +84,10 @@ if( $doSave ) {
 echo "<h1>" . $serviceData['series_title'] . "</h1>";
 echo "<h2>" . $serviceData['plan_title'] . "</h2>";
 echo "<h3>" . date("F j, Y",$serviceData['service_start_times'][0]) . "</h3>";
-echo "<p>";
-	echo "<a href='?move=" . ( $move - 1 ) . "'>&lt; Previous</a>";
-	echo " <a href='?move=" . ( $move + 1 ) . "'>Next &gt;</a>";
-echo "</p>\n";
+echo "<div class='previousNextControls'>";
+	echo "<a href='?move=" . ( $move - 1 ) . "'><i class='fa fa-chevron-circle-left' aria-hidden='true'></i> Previous</a>";
+	echo "<a href='?move=" . ( $move + 1 ) . "'>Next <i class='fa fa-chevron-circle-right' aria-hidden='true'></i></a>";
+echo "</div>\n";
 
 if($successMessage) {
   ?><div class="alert alert-success alert-dismissible" role="alert">
@@ -101,8 +102,7 @@ if($errorMessage) {
     </div><?php
 }
 
-printTable($serviceData, true);
-echo "<pre>" . print_r($serviceData,true) . "</pre>";
+printTable($serviceData, 'setup');
 ?></div>
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
