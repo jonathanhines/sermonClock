@@ -1,5 +1,5 @@
 <?php
-  date_default_timezone_set ("America/Toronto");
+  require_once("../config.php");
   require_once("../includes/serviceStorage.inc.php");
   require_once("../includes/stateStorage.inc.php");
   require_once("../includes/printTable.inc.php");
@@ -113,7 +113,7 @@
     <ul class="nav nav-tabs" id="formModeTabs" role="tablist">
       <li role="presentation" <?php if($state['mode'] === 'offset') { echo ' class="active"';} ?>><a href="#offset" aria-controls="offset" role="tab" data-toggle="tab"><i class="fa fa-circle<?php if($state['mode'] === 'offset') { echo ' active';} ?>" aria-hidden="true"></i> Offset</a></li>
       <li role="presentation" <?php if($state['mode'] === 'target') { echo ' class="active"';} ?>><a href="#time" aria-controls="time" role="tab" data-toggle="tab"><i class="fa fa-circle<?php if($state['mode'] === 'target') { echo ' active';} ?>" aria-hidden="true"></i> Set</a></li>
-      <li role="presentation" <?php if($state['mode'] === 'service') { echo ' class="active"';} ?>><a href="#service" aria-controls="service" role="tab" data-toggle="tab"><i class="fa fa-circle<?php if($state['mode'] === 'service') { echo ' active';} ?>" aria-hidden="true"></i> Automatic</a></li>
+      <?php if( defined("PCO_APPLICATION_ID") ) { ?><li role="presentation" <?php if($state['mode'] === 'service') { echo ' class="active"';} ?>><a href="#service" aria-controls="service" role="tab" data-toggle="tab"><i class="fa fa-circle<?php if($state['mode'] === 'service') { echo ' active';} ?>" aria-hidden="true"></i> Automatic</a></li><?php } ?>
     </ul>
 
     <!-- Tab panes -->
@@ -146,7 +146,7 @@
           </form>
         </div>
       </div>
-      <div role="tabpanel" class="tab-pane<?php if($state['mode'] === 'service') { echo ' active';} ?>" id="service">
+      <?php if( defined("PCO_APPLICATION_ID") ) { ?><div role="tabpanel" class="tab-pane<?php if($state['mode'] === 'service') { echo ' active';} ?>" id="service">
         <div class="autopilotControls">
           <form method="post" target="">
             <?php if( $state['mode'] !== 'service') { ?>
@@ -161,7 +161,7 @@
             printTable($serviceData, "live");
           }
         ?>
-      </div>
+      </div><?php } ?>
     </div>
 
     <hr>
