@@ -37,9 +37,12 @@ function getServiceFromAPI($move) {
 	foreach($times as $time) {
 		if($time->attributes->time_type == "service") {
 			$running_times[] = strtotime($time->attributes->starts_at);
-	    $serviceStartTimes[] = strtotime($time->attributes->starts_at);
+			$serviceStartTimes[] = strtotime($time->attributes->starts_at);
 		}
 	}
+
+	sort($running_times);
+	sort($serviceStartTimes);
 
 	// If an item happens before the service starts move the start time back.
 	foreach($items as $item) {
@@ -54,28 +57,29 @@ function getServiceFromAPI($move) {
 	$serviceItems = [];
 	foreach($items as $item) {
 		if($item->attributes->service_position !== "post") {
-	    $startTimes = [];
+			$startTimes = [];
 			foreach($running_times as $i => $running_time) {
-	      $startTimes[$i] = $running_time;
+				$startTimes[$i] = $running_time;
 				$running_times[$i] += intval($item->attributes->length);
 			}
-	    $serviceItems[] = [
-	      "id" => $item->id,
-	      "title" => $item->attributes->title,
-	      "type" => $item->attributes->item_type,
-	      "length" => intval($item->attributes->length),
-	      "startTimes" => $startTimes
-	    ];
+
+			$serviceItems[] = [
+				"id" => $item->id,
+				"title" => $item->attributes->title,
+				"type" => $item->attributes->item_type,
+				"length" => intval($item->attributes->length),
+				"startTimes" => $startTimes
+			];
 		}
 	}
 
 	// This is the main data object that we will display and use.
 	return [
-	  "plan_id" => $plan_id,
-	  "series_title" => $plan->series_title,
-	  "plan_title" => $plan->title,
-	  "service_start_times" => $serviceStartTimes,
-	  "items" => $serviceItems
+		"plan_id" => $plan_id,
+		"series_title" => $plan->series_title,
+		"plan_title" => $plan->title,
+		"service_start_times" => $serviceStartTimes,
+		"items" => $serviceItems
 	];
 }
 

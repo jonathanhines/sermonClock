@@ -7,7 +7,7 @@
 
 setActiveItem = function(id, serviceIndex) {
   $.ajax({
-    url: sermonConfig.apiBase + '/times',
+    url: sermonConfig.apiBase + '/times/',
     dataType: 'json',
     method: "POST",
     data: {

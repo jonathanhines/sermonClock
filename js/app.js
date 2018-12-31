@@ -5,7 +5,7 @@
   var currentServiceNumber = 0;
   function getTimes() {
     $.ajax({
-      url: sermonConfig.apiBase + '/times',
+      url: sermonConfig.apiBase + '/times/',
       dataType: 'json',
       success: function(data, status) {
         currentTime = data.current;
