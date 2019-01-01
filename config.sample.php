@@ -12,3 +12,6 @@ $defaultOffsets = [
 //define("SERVICE_TYPE_ID", "100000");
 //define("PCO_APPLICATION_ID","");
 //define("PCO_APPLICATION_SECRET","");
+
+// What should the default offset time be?
+define("DEFAULT_TIME_OFFSET", 35);
