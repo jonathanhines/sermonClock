@@ -119,13 +119,24 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane<?php if($state['mode'] === 'offset') { echo ' active';} ?>" id="offset">
-        <div style="max-width:300px;">
-          <form method="post" target="">
+        <div>
+          <form id="timeAdditionForm" method="post" target="">
             <div class="form-group">
-              <label for="timeAddition">Time addition</label>
-              <div class="input-group">
-                <input type="number" class="form-control" id="timeAddition" name="timeOffset" placeholder="Email" value="35">
-                <span class="input-group-addon">minutes</span>
+              <label for="timeAddition" class="inline-form-label-above">Time addition</label>
+              <div class="inline-form-item">
+                <div class="input-group">
+                  <input type="number" class="form-control" id="timeAdditionInput" name="timeOffset" placeholder="Email" value="35">
+                  <span class="input-group-addon">minutes</span>
+                </div>
+              </div>
+              <div class="inline-form-item">
+                <?php if( isset($defaultOffsets) ) { ?><div class="btn-group" role="group" aria-label="Pick a time offset preset">
+                  <?php
+                    foreach( $defaultOffsets as $defaultOffset ) {
+                      echo '<button type="button" class="btn btn-default" onClick="submitDefaultOffset(' . $defaultOffset . ');">' . $defaultOffset . ' min</button>';
+                    }
+                  ?>
+                </div><?php } ?>
               </div>
             </div>
             <button type="submit" class="btn btn-success"><i class='fa fa-floppy-o' aria-hidden='true'></i> Save</button>
