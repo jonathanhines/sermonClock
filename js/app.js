@@ -1,20 +1,40 @@
-(function($,config){
+//(function($,config){
   var currentTime, targetTime, timeoutHandle, isBlank;
+  var currentItemTitle = "";
+  var targetItemTitle = "";
+  var currentServiceNumber = 0;
   function getTimes() {
     $.ajax({
-      url: config.apiBase + '/times',
+      url: sermonConfig.apiBase + '/times/',
       dataType: 'json',
       success: function(data, status) {
         currentTime = data.current;
         targetTime = data.target;
         isBlank = data.isBlank;
+        if(typeof(data.currentItem) !== 'undefined') {
+          currentItemTitle = data.currentItem.title;
+        } else {
+          currentItemTitle = "";
+        }
+        if(typeof(data.targetItem) !== 'undefined') {
+          targetItemTitle = data.targetItem.title;
+        } else {
+          targetItemTitle = "";
+        }
+        if(typeof(data.currentServiceNumber) !== 'undefined') {
+          currentItemTitle = data.currentServiceNumber + ": " + currentItemTitle;
+          targetItemTitle = data.currentServiceNumber + ": " + targetItemTitle;
+        }
 
         // Restart displat update
         clearTimeout(timeoutHandle);
         updateDisplay();
+        if(typeof(getTimesCompleteCallback) === "function") {
+          getTimesCompleteCallback(data);
+        }
       }
     });
-    setTimeout(getTimes, config.timestep.server * 1000);
+    setTimeout(getTimes, sermonConfig.timestep.server * 1000);
   }
 
   function updateDisplay() {
@@ -28,10 +48,11 @@
     }
 
     if(!isBlank) {
-      $("#mainDisplay .content").removeClass("blank");
+      $("#mainDisplay").removeClass("blank");
     } else {
-      $("#mainDisplay .content").addClass("blank");
+      $("#mainDisplay").addClass("blank");
     }
+
     $("#mainDisplay .content").html(formatDisplayTime(timeRemaining));
     $("#mainDisplay").attr('data-timemode', timeMode);
 
@@ -39,12 +60,15 @@
       maxFontPixels: -1
     });*/
 
-    currentTime = currentTime + config.timestep.display;
-    timeoutHandle = setTimeout(updateDisplay, config.timestep.display * 1000);
+    $("#currentItemTitle").html(currentItemTitle);
+    $("#targetItemTitle").html(targetItemTitle);
+
+    currentTime = currentTime + sermonConfig.timestep.display;
+    timeoutHandle = setTimeout(updateDisplay, sermonConfig.timestep.display * 1000);
   }
   getTimes();
 
-})(jQuery,sermonConfig);
+//})(jQuery,sermonConfig);
 function pad(num) {
     return ("0"+num).slice(-2);
 }

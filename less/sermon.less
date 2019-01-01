@@ -1,4 +1,11 @@
-
+@color-table-current-row-or-columm: rgba(0,0,0,0.1);
+@color-table-current-row-and-columm: rgba(0,0,0,0.2);
+@bootstrap-success-color: #5cb85c;
+@bootstrap-table-row-success: #dff0d8;
+@color-table-current-active-and-row-or-columm: darken(@bootstrap-table-row-success,10%);
+@color-table-current-active-and-row-and-columm: darken(@bootstrap-table-row-success,20%);
+@target-line: solid 1px #000;
+@color-sermon-grey: #888;
 
 html, body {
   margin: 0;
@@ -6,8 +13,12 @@ html, body {
   cursor: none;
 }
 #mainDisplay {
-  .content.blank {
-    display: none;
+  &.blank{
+    .content,
+    #targetItemTitle,
+    #currentItemTitle {
+      display: none;
+    }
   }
   font-family: 'Droid Sans Mono', monospace;
   background-color: @color-timer-bg;
@@ -18,6 +29,7 @@ html, body {
   text-align: center;
   font-size: 30vw;
   font-weight: bold;
+  position: relative;
   &.hasHours {
     font-size: 20vw;
   }
@@ -28,11 +40,27 @@ html, body {
   &[data-timemode="endingSoon"] {
     color: @color-ending-soon-text;
   }
+  #targetItemTitle,
+  #currentItemTitle {
+    color: #FFFFFF;
+    position: absolute;
+    left: 0;
+    font-size: 2vw;
+    line-height: 1.2em;
+    padding: 1vw 2vw;
+  }
+  #targetItemTitle {
+    bottom: 0;
+  }
+  #currentItemTitle {
+    top: 0;
+  }
 
   &.admin-preview {
     @preview-height: 26vw;
     @large-preview-height: 330px;
     margin-top: 40px;
+    margin-bottom: 40px;
     height: @preview-height;
     padding: (@preview-height/2) 0 0;
     font-size: 20vw;
@@ -46,14 +74,113 @@ html, body {
       &.hasHours {
         font-size: 210px;
       }
+
+      #targetItemTitle,
+      #currentItemTitle {
+        padding: 5px 10px;
+        font-size: 22px;
+      }
     }
   }
 }
+
+.btn i {
+  margin-right: 5px;
+}
+.nav-tabs {
+  li i {
+    color: @color-sermon-grey;
+    &.active {
+      color: @bootstrap-success-color;
+    }
+  }
+}
+.tab-pane {
+  position: relative;
+  padding-top: 20px;
+}
+.activeIndicator {
+  color: @bootstrap-success-color;
+}
 .admin {
-  #mainDisplay .content.blank {
-    display: block;
-    opacity: 0.4;
+  .container {
+    padding-bottom: 100px;
+  }
+  #mainDisplay.blank {
+    #targetItemTitle,
+    #currentItemTitle,
+   .content {
+     display: block;
+     opacity: 0.4;
+   }
   }
   cursor: auto;
   font-family: 'Cabin', sans-serif;
+}
+.autopilotControls {
+  position: absolute;
+  right: 5px;
+  top: 1px;
+  @media (min-width: 992px) {
+    top: 20px;
+  }
+
+  button,
+  a {
+    margin-left: 5px;
+  }
+  .launch-action {
+    color: @bootstrap-success-color;
+    &:hover,
+    &:focus {
+      color: darken(@bootstrap-success-color,5%);
+    }
+  }
+  .settings-action {
+    color: @color-sermon-grey;
+    &:hover,
+    &:focus {
+      color: darken(@color-sermon-grey,5%);
+    }
+  }
+}
+.btn-cleared {
+  border: none 0 transparent;
+  background-color: transparent;
+  padding: 0;
+}
+
+.table > tbody > tr.currentItem > td {
+  background-color: @color-table-current-row-or-columm;
+  &.currentService {
+    font-weight: bold;
+    background-color: @color-table-current-row-and-columm;
+  }
+}
+.table > tbody > tr > td.currentService {
+  background-color: @color-table-current-row-or-columm;
+}
+
+.table > tbody > tr.success.currentItem > td {
+  background-color: @color-table-current-active-and-row-or-columm;
+  &.currentService {
+    font-weight: bold;
+    background-color: @color-table-current-active-and-row-and-columm;
+  }
+}
+.table > tbody > tr.success > td.currentService {
+  background-color: @color-table-current-active-and-row-or-columm;
+}
+
+.table > tbody > tr.targetItem > td {
+  border-top: @target-line;
+}
+td.targetItem {
+  font-weight: bold;
+}
+.previousNextControls {
+  a {
+    margin-right: 10px;
+    display: inline-block;
+  }
 }
