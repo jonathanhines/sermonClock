@@ -1,6 +1,4 @@
 node_modules
 bower_components
-data/time.json
-data/state.json
-data/service.json
+data
 config.php

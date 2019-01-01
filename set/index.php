@@ -2,7 +2,9 @@
   require_once("../config.php");
   require_once("../includes/serviceStorage.inc.php");
   require_once("../includes/stateStorage.inc.php");
+  require_once("../includes/timeOffsetStorage.inc.php");
   require_once("../includes/printTable.inc.php");
+
 
   $state = getStoredStateData();
 
@@ -21,16 +23,21 @@
       $successMessages[] = "Timer was updated, now set to $targetTime";
     }
   } elseif(isset($_POST['timeOffset'])) {
-    $targetTime = date('g:i:sa', time() + intval($_POST['timeOffset']) * 60);
+    $timeOffset = intval($_POST['timeOffset']);
+    $targetTime = date('g:i:sa', time() + $timeOffset * 60);
     $state['mode'] = 'offset';
     $state['data'] = [
-      'targetTime' => $targetTime
+      'targetTime' => $targetTime,
     ];
     if( !putStoredStateData($state) ) {
       $errorMessages[] = "Unable to save time mode.";
     } else {
       $successMessages[] = "Timer was updated by adding " . intval($_POST['timeOffset']) . " minutes to the current time. Target time set to $targetTime";
     }
+    if( !putStoredOffsetData($timeOffset) ) {
+      $errorMessages[] = "Unable to save time offset.";
+    }
+    $lastTimeOffset = $timeOffset;
   } elseif(isset($_POST['activateServiceMode'])) {
     $state['mode'] = 'service';
     // Start out assuming everything is on schedule and the server wallclock time is correct.
@@ -65,6 +72,9 @@
       $errorMessages = "Unable to update blank state.";
     }
   }
+  if(!isset($lastTimeOffset)){
+    $lastTimeOffset = getStoredOffsetData();
+  };
  ?><!doctype html>
 <html class="no-js" lang="">
 
@@ -119,13 +129,24 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane<?php if($state['mode'] === 'offset') { echo ' active';} ?>" id="offset">
-        <div style="max-width:300px;">
-          <form method="post" target="">
+        <div>
+          <form id="timeAdditionForm" method="post" target="">
             <div class="form-group">
-              <label for="timeAddition">Time addition</label>
-              <div class="input-group">
-                <input type="number" class="form-control" id="timeAddition" name="timeOffset" placeholder="Email" value="35">
-                <span class="input-group-addon">minutes</span>
+              <label for="timeAddition" class="inline-form-label-above">Time addition</label>
+              <div class="inline-form-item">
+                <div class="input-group">
+                  <input type="number" class="form-control" id="timeAdditionInput" name="timeOffset" placeholder="Email" value="<?php echo $lastTimeOffset; ?>">
+                  <span class="input-group-addon">minutes</span>
+                </div>
+              </div>
+              <div class="inline-form-item">
+                <?php if( isset($defaultOffsets) ) { ?><div class="btn-group" role="group" aria-label="Pick a time offset preset">
+                  <?php
+                    foreach( $defaultOffsets as $defaultOffset ) {
+                      echo '<button type="button" class="btn btn-default" onClick="submitDefaultOffset(' . $defaultOffset . ');">' . $defaultOffset . ' min</button>';
+                    }
+                  ?>
+                </div><?php } ?>
               </div>
             </div>
             <button type="submit" class="btn btn-success"><i class='fa fa-floppy-o' aria-hidden='true'></i> Save</button>

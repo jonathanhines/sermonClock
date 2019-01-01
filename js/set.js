@@ -37,3 +37,8 @@ getTimesCompleteCallback = function(data){
     }
   }
 }
+
+submitDefaultOffset = function(timeMinutes) {
+  $('input#timeAdditionInput').val(timeMinutes);
+  $('form#timeAdditionForm').submit();
+}

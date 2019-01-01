@@ -40,14 +40,11 @@ cd /var/www/html
 bower install
 ```
 
-Copy all files in `/var/www/html/data` that have `sample` in their filename to the same file name without the sample and then make sure the new files are writable by the web server.  ie:
+Make a writable folder `/var/www/html/data` so that values can be stored.
 
 ```
-cd /var/www/html/data
-cp data.sample.txt data.txt
-cp blank.sample.txt blank.txt
-chmod 666 data.txt
-chmod 666 blank.txt
+mkdir -p /var/www/html/data
+chmod 777 /var/www/html/data
 ```
 
 For development
